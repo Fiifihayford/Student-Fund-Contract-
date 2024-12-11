@@ -14,7 +14,7 @@ contract StudentFund{
     }
 
     event _studentAdded(string, address indexed,bool);//events for student records
-    event _Fundcontract(bool,address,uint256);// Event for funders
+    event _FundStudent(address studentAddress,address,uint256);// Event for funders
     event _withdrawal(address indexed , uint256); 
 
     mapping(address funders => uint256 AmountDonated) public Funders; // container for mapping amount donated by founder. 
@@ -46,7 +46,8 @@ contract StudentFund{
     function FundStudent(address _studentFees ) public payable FeesStatus( _studentFees){
         require(msg.value.GetConversionRate() >= MinimumAmountinUSD, "value is less than a dollar");
         FundersAddress.push(msg.sender);  
-        Funders[msg.sender]+= msg.value;     
+        Funders[msg.sender]+= msg.value; 
+        emit _FundStudent(_student, msg.sender,msg.value);
     }
 
     function withdraw() public OnlyOwner{
